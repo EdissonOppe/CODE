@@ -1,12 +1,13 @@
 clear all;
 clc;
-display('------------Linear Quadratic Regulator-----------------')
+% Datos
 mc= 1.5;
 mp = 0.5;
 g = 9.78;
 L=1;
 d1= 1e-2;
 d2= 1e-2;
+% Espacio de Estados
 A= [0, 0, 1, 0;
     0, 0, 0, 1;
     0, (g*mp)/mc, -d1/mc, -d2/(L*mc);
@@ -19,6 +20,7 @@ C= [0  1  0  0];
 D=0;
 system=ss(A,B,C,D);
 sys1=tf(system)
+%LQR
 QQ=eye(4);
 Q=QQ;
 R=0.1;
@@ -26,7 +28,7 @@ x0=[0;5*pi/180; 0; 0];
 des_pole=[-3;-3;-3;-3]*1;
 K_1=acker(A,B,des_pole);
 K= lqr(A,B,Q,R);
-% Closed loop system
+% LQG
 sys = ss((A - B*K), B, C, D);
 subplot(2,1,1)
 step(sys)
